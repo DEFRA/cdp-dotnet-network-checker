@@ -28,7 +28,7 @@ builder.Services.AddSingleton<IMongoDbClientFactory>(_ =>
         builder.Configuration.GetValue<string>("Mongo:DatabaseName")!));
 
 // our service
-builder.Services.AddSingleton<IBookService, BookService>();
+builder.Services.AddSingleton<IProxyService, ProxyService>();
 
 // health checks
 builder.Services.AddHealthChecks();
@@ -51,7 +51,7 @@ if (builder.IsSwaggerEnabled())
 
 app.UsePathBase("/cdp-dotnet-network-checker");
 app.UseRouting();
-app.UseLibraryEndpoints();
+app.UseProxyEndpoints();
 app.MapHealthChecks("/health");
 
 app.Run();
