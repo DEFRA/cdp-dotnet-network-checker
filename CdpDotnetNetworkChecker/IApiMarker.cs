@@ -1,5 +1,5 @@
 namespace CdpDotnetNetworkChecker;
 
-public interface IApiMarker
+public interface ApiMarker
 {
 }
