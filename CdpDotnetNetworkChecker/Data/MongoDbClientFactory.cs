@@ -1,7 +1,7 @@
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 
-namespace Backend.Api.Data;
+namespace CdpDotnetNetworkChecker.Data;
 
 public class MongoDbClientFactory : IMongoDbClientFactory
 {

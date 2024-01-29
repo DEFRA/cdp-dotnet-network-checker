@@ -27,6 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Backend.Api\Backend.Api.csproj"/>
+    <ProjectReference Include="..\CdpDotnetNetworkChecker\CdpDotnetNetworkChecker.csproj"/>
   </ItemGroup>
 </Project>

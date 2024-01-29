@@ -1,9 +1,9 @@
-﻿using Backend.Api.Models;
-using Backend.Api.Services;
+﻿using CdpDotnetNetworkChecker.Models;
+using CdpDotnetNetworkChecker.Services;
 using FluentValidation;
 using FluentValidation.Results;
 
-namespace Backend.Api.Endpoints;
+namespace CdpDotnetNetworkChecker.Endpoints;
 
 public static class LibraryEndpoints
 {

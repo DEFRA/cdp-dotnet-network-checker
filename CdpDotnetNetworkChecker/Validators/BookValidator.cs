@@ -1,7 +1,7 @@
-﻿using Backend.Api.Models;
+﻿using CdpDotnetNetworkChecker.Models;
 using FluentValidation;
 
-namespace Backend.Api.Validators;
+namespace CdpDotnetNetworkChecker.Validators;
 
 public class BookValidator : AbstractValidator<Book>
 {

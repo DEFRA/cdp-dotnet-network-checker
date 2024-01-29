@@ -1,4 +1,4 @@
-namespace Backend.Api.Config;
+namespace CdpDotnetNetworkChecker.Config;
 
 public static class Environment
 {

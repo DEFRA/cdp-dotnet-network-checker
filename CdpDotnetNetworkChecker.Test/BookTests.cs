@@ -1,8 +1,8 @@
-using Backend.Api.Models;
-using Backend.Api.Validators;
+using CdpDotnetNetworkChecker.Models;
+using CdpDotnetNetworkChecker.Validators;
 using MongoDB.Bson;
 
-namespace Backend.Api.Test;
+namespace CdpDotnetNetworkChecker.Test;
 
 using FluentValidation.TestHelper;
 

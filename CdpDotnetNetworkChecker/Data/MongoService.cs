@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace Backend.Api.Data;
+namespace CdpDotnetNetworkChecker.Data;
 
 public abstract class MongoService<T>
 {

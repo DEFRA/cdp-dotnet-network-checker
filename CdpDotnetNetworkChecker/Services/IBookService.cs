@@ -1,6 +1,6 @@
-﻿using Backend.Api.Models;
+﻿using CdpDotnetNetworkChecker.Models;
 
-namespace Backend.Api.Services;
+namespace CdpDotnetNetworkChecker.Services;
 
 public interface IBookService
 {

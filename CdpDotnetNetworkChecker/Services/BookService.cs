@@ -1,8 +1,8 @@
-﻿using Backend.Api.Data;
-using Backend.Api.Models;
+﻿using CdpDotnetNetworkChecker.Data;
+using CdpDotnetNetworkChecker.Models;
 using MongoDB.Driver;
 
-namespace Backend.Api.Services;
+namespace CdpDotnetNetworkChecker.Services;
 
 public class BookService : MongoService<Book>, IBookService
 {

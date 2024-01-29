@@ -1,7 +1,7 @@
-using Backend.Api.Config;
-using Backend.Api.Data;
-using Backend.Api.Endpoints;
-using Backend.Api.Services;
+using CdpDotnetNetworkChecker.Config;
+using CdpDotnetNetworkChecker.Data;
+using CdpDotnetNetworkChecker.Endpoints;
+using CdpDotnetNetworkChecker.Services;
 using FluentValidation;
 using Serilog;
 
@@ -49,7 +49,7 @@ if (builder.IsSwaggerEnabled())
     app.UseSwaggerUI();
 }
 
-app.UsePathBase("/cdp-dotnet-backend-template");
+app.UsePathBase("/cdp-dotnet-network-checker");
 app.UseRouting();
 app.UseLibraryEndpoints();
 app.MapHealthChecks("/health");

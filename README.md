@@ -1,4 +1,4 @@
-# CDP C# ASP.NET Backend Template
+# cdp-dotnet-network-checker
 
 Core delivery C# ASP.NET backend template.
 
@@ -31,5 +31,5 @@ dotnet test
 
 Run CDP-Deployments application:
 ```bash
-dotnet run --project Backend.Api --launch-profile Development
+dotnet run --project CdpDotnetNetworkChecker --launch-profile Development
 ```
