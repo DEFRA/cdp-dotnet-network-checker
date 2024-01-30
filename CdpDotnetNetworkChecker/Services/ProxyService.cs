@@ -32,7 +32,7 @@ public class ProxyService : IProxyService
     public ProxyService(ILogger<ProxyService> logger)
     {
         _logger = logger;
-        var proxyString = Environment.GetEnvironmentVariable("HTTPS_PROXY");
+        var proxyString = Environment.GetEnvironmentVariable("HTTP_PROXY");
         _logger.LogInformation("Setting up the proxy using {}", proxyString);
         _proxy = new WebProxy(proxyString);
         _proxyClient = new HttpClient(new HttpClientHandler { Proxy = _proxy, UseProxy = true});
