@@ -18,14 +18,12 @@ public sealed class ProxyResult
 
 public interface IProxyService
 {
-    Task<ProxyResult> CallProxy(string uri);
+    Task<ProxyResult> CallProxy(string uri, string? proxyUri);
     Task<ProxyResult> CallDirect(string uri);
 }
 
 public class ProxyService : IProxyService
 {
-    private readonly WebProxy _proxy;
-    private readonly HttpClient _proxyClient;
     private readonly HttpClient _directClient;
     private readonly ILogger _logger;
 
@@ -33,19 +31,25 @@ public class ProxyService : IProxyService
     {
         _logger = logger;
         var proxyString = Environment.GetEnvironmentVariable("HTTP_PROXY");
-        _logger.LogInformation("Setting up the proxy using {}", proxyString);
-        _proxy = new WebProxy(proxyString);
-        _proxyClient = new HttpClient(new HttpClientHandler { Proxy = _proxy, UseProxy = true});
+        _logger.LogInformation("Setting up the proxy using {proxyString}", proxyString);
         _directClient = new HttpClient(new HttpClientHandler { UseProxy = false });
     }
 
-    public async Task<ProxyResult> CallProxy(string uri)
+    public async Task<ProxyResult> CallProxy(string uri, string? proxyUri)
     {
-  
-        _logger.LogInformation("Calling {uri} via the proxy", uri);
+        var proxyString = Environment.GetEnvironmentVariable("HTTP_PROXY");
+        if (proxyUri != null)
+        {
+            proxyString = proxyUri;
+        }
+        _logger.LogInformation("Setting up the proxy using {proxyString}", proxyString);
         try
         {
-            var response = await _proxyClient.GetAsync(uri);
+            var proxy = new WebProxy(proxyString);
+            var proxyClient = new HttpClient(new HttpClientHandler { Proxy = proxy, UseProxy = true});
+            _logger.LogInformation("Calling {uri} via the proxy", uri);
+
+            var response = await proxyClient.GetAsync(uri);
             var content = "";
             if (!response.IsSuccessStatusCode)
             {
@@ -58,7 +62,7 @@ public class ProxyService : IProxyService
                 Error = content, 
                 BodyLength = content.Length,
                 ViaProxy = true,
-                ProxyUrl = _proxy.Address?.ToString()
+                ProxyUrl = proxy.Address?.ToString()
             };
 
             return proxyResult;
@@ -72,7 +76,7 @@ public class ProxyService : IProxyService
                 Error = ex.Message, 
                 BodyLength = 0,
                 ViaProxy = true,
-                ProxyUrl = _proxy.Address?.ToString()
+                ProxyUrl = proxyString
             };
 
             return proxyResult;
