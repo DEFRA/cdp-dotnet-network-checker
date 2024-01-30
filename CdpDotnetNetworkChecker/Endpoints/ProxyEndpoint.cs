@@ -14,7 +14,6 @@ public static class ProxyEndpoint
 
     private static async Task<IResult> CallViaProxy(IProxyService proxyService, string uri)
     {
-        Console.WriteLine(uri);
         try
         {
             var res = await proxyService.CallProxy(uri);
