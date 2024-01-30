@@ -43,12 +43,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
-if (builder.IsSwaggerEnabled())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
 app.UsePathBase("/cdp-dotnet-network-checker");
 app.UseRouting();
 app.UseProxyEndpoints();

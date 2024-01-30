@@ -43,26 +43,41 @@ public class ProxyService : IProxyService
     {
   
         _logger.LogInformation("Calling {uri} via the proxy", uri);
-        
-        var response = await _proxyClient.GetAsync(uri);
-        var content = "";
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            content = await response.Content.ReadAsStringAsync();
+            var response = await _proxyClient.GetAsync(uri);
+            var content = "";
+            if (!response.IsSuccessStatusCode)
+            {
+                content = await response.Content.ReadAsStringAsync();
+            }
+            var proxyResult = new ProxyResult
+            {
+                Uri = uri, 
+                Code = (int)response.StatusCode, 
+                Error = content, 
+                BodyLength = content.Length,
+                ViaProxy = true,
+                ProxyUrl = _proxy.Address?.ToString()
+            };
+
+            return proxyResult;
+        }
+        catch (Exception ex)
+        {
+            var proxyResult = new ProxyResult
+            {
+                Uri = uri, 
+                Code = 500, 
+                Error = ex.Message, 
+                BodyLength = 0,
+                ViaProxy = true,
+                ProxyUrl = _proxy.Address?.ToString()
+            };
+
+            return proxyResult;
         }
         
-        
-        var proxyResult = new ProxyResult
-        {
-            Uri = uri, 
-            Code = (int)response.StatusCode, 
-            Error = content, 
-            BodyLength = content.Length,
-            ViaProxy = true,
-            ProxyUrl = _proxy.Address?.ToString()
-        };
-
-        return proxyResult;
     }
 
     public async Task<ProxyResult> CallDirect(string uri)

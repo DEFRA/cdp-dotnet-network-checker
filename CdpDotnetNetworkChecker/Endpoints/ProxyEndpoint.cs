@@ -15,8 +15,19 @@ public static class ProxyEndpoint
     private static async Task<IResult> CallViaProxy(IProxyService proxyService, string uri)
     {
         Console.WriteLine(uri);
-        var res = await proxyService.CallProxy(uri);
-        return Results.Ok(res);    }
+        try
+        {
+            var res = await proxyService.CallProxy(uri);
+            return Results.Ok(res);
+        }
+        catch(Exception e)
+        {
+            return Results.Problem(e.Message);
+        }
+        
+            
+        
+    }
 
     private static async Task<IResult> CallDirect(IProxyService proxyService, string uri)
     {
