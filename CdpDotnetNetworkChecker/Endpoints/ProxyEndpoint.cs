@@ -12,11 +12,11 @@ public static class ProxyEndpoint
         app.MapGet("/direct", CallDirect);
     }
 
-    private static async Task<IResult> CallViaProxy(IProxyService proxyService, string uri)
+    private static async Task<IResult> CallViaProxy(IProxyService proxyService, string uri, string? proxy)
     {
         try
         {
-            var res = await proxyService.CallProxy(uri);
+            var res = await proxyService.CallProxy(uri, proxy);
             return Results.Ok(res);
         }
         catch(Exception e)
