@@ -2,6 +2,7 @@ using CdpDotnetNetworkChecker.Config;
 using CdpDotnetNetworkChecker.Data;
 using CdpDotnetNetworkChecker.Endpoints;
 using CdpDotnetNetworkChecker.Services;
+using CdpDotnetNetworkChecker.Utils;
 using FluentValidation;
 using Serilog;
 
@@ -21,6 +22,9 @@ var logger = new LoggerConfiguration()
 builder.Logging.AddSerilog(logger);
 
 logger.Information("Starting application");
+
+// Load certificates into Trust Store - Note must happen before Mongo and Http client connections 
+builder.SetupTrustStore(logger);
 
 // Mongo
 builder.Services.AddSingleton<IMongoDbClientFactory>(_ =>
