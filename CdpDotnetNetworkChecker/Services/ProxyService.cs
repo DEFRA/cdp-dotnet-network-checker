@@ -86,7 +86,7 @@ public class ProxyService : IProxyService
 
     public async Task<ProxyResult> CallDirect(string uri)
     {
-        _logger.LogInformation("Calling {uri} via the proxy", uri);
+        _logger.LogInformation("Calling {uri} without the proxy", uri);
         
         var response = await _directClient.GetAsync(uri);
         var content = "";
