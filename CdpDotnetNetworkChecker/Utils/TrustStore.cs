@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Serilog.Core;
@@ -15,11 +16,11 @@ public static class TrustStore
 
     private static List<string> GetCertificates(Logger logger)
     {
-        return Environment.GetEnvironmentVariables().Cast<KeyValuePair<string, string>>()
-            .Where(entry => entry.Key.StartsWith("TRUSTSTORE") && IsBase64String(entry.Value))
+        return Environment.GetEnvironmentVariables().Cast<DictionaryEntry>()
+            .Where(entry => entry.Key.ToString().StartsWith("TRUSTSTORE") && IsBase64String(entry.Value.ToString()))
             .Select(entry =>
             {
-                var data = Convert.FromBase64String(entry.Value);
+                var data = Convert.FromBase64String(entry.Value.ToString());
                 logger.Information($"{entry.Key} certificate decoded");
                 return Encoding.UTF8.GetString(data);
             }).ToList();
