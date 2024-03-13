@@ -47,7 +47,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
-app.UsePathBase("/cdp-dotnet-network-checker");
 app.UseRouting();
 app.UseProxyEndpoints();
 app.MapHealthChecks("/health");
