@@ -46,9 +46,9 @@ public class ProxyService : IProxyService
         try
         {
             var proxy = new WebProxy(proxyUri);
+
+            GetCredentialsFromUriOrEnv(proxyUri, out var proxyUsername, out var proxyPassword);
             
-            var proxyUsername = Environment.GetEnvironmentVariable("SQUID_USERNAME");
-            var proxyPassword = Environment.GetEnvironmentVariable("SQUID_PASSWORD");
             if (proxyUsername != null && proxyPassword != null)
             {
                 _logger.LogInformation("Connecting to proxy using squid credentials");
@@ -71,7 +71,7 @@ public class ProxyService : IProxyService
                 Error = content,
                 BodyLength = content.Length,
                 ViaProxy = true,
-                ProxyUrl = proxy.Address?.ToString()
+                ProxyUrl = RedactUriCredentials(proxyUri)
             };
 
             return proxyResult;
@@ -119,14 +119,28 @@ public class ProxyService : IProxyService
     private static string RedactUriCredentials(Uri uri)
     {
         var uriBuilder = new UriBuilder(uri);
-        if (!string.IsNullOrEmpty(uriBuilder.UserName))
-        {
-            uriBuilder.UserName = "*****";
-        }
         if (!string.IsNullOrEmpty(uriBuilder.Password))
         {
             uriBuilder.Password = "*****";
         }
         return uriBuilder.Uri.ToString();
+    }
+    
+    private void GetCredentialsFromUriOrEnv(Uri uri, out string? username, out string? password)
+    {
+        
+        var split = uri.UserInfo.Split(':');
+        if (split.Length == 2)
+        {
+            _logger.LogInformation("Getting credentials from URI");
+            username = uri.UserInfo.Split(':')[0];
+            password = uri.UserInfo.Split(':')[1];
+        }
+        else
+        {
+            _logger.LogInformation("Getting credentials from SQUID ENVs");
+            username = Environment.GetEnvironmentVariable("SQUID_USERNAME");
+            password = Environment.GetEnvironmentVariable("SQUID_PASSWORD");
+        }
     }
 }
