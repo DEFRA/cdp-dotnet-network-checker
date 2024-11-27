@@ -26,10 +26,10 @@ public class ProxyService : IProxyService
     private readonly HttpClient _directClient;
     private readonly ILogger _logger;
 
-    public ProxyService(ILogger<ProxyService> logger)
+    public ProxyService(ILogger<ProxyService> logger, IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
-        _directClient = new HttpClient(new HttpClientHandler { UseProxy = false });
+        _directClient = httpClientFactory.CreateClient("DefaultClient");
     }
 
     public async Task<ProxyResult> CallProxy(string uri, string? proxyFromParam)
