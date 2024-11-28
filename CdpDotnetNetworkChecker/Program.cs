@@ -15,12 +15,28 @@ builder.Configuration.AddEnvironmentVariables("CDP");
 builder.Configuration.AddEnvironmentVariables();
 
 // Serilog
+builder.Services.AddHttpContextAccessor();
 builder.Logging.ClearProviders();
+var tracingHeader = builder.Configuration.GetValue<string>("Tracing:Header");
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .Enrich.With<LogLevelMapper>()
+    .Enrich.WithRequestHeader(tracingHeader, tracingHeader)
     .CreateLogger();
 builder.Logging.AddSerilog(logger);
+
+//tracing
+builder.Services.AddHttpClient("DefaultClient")
+    .AddHeaderPropagation();
+
+builder.Services.AddHeaderPropagation(options =>
+{
+    var tracingEnabled = builder.Configuration.GetValue<bool>("Tracing:Enabled");
+    if (tracingEnabled && string.IsNullOrEmpty(tracingHeader) == false)
+    {
+        options.Headers.Add(tracingHeader);    
+    }
+});
 
 logger.Information("Starting application");
 
@@ -48,6 +64,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
+app.UseHeaderPropagation();
 app.UseRouting();
 app.UseProxyEndpoints();
 app.MapHealthChecks("/health");
